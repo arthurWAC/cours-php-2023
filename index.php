@@ -22,7 +22,7 @@ Balise fermante :
 
 */
 
-echo 'Mon premier fichier PHP Super !';
+echo '<h2>Mon premier fichier PHP Super !</h2>';
 // Une instruction PHP termine toujours par un ;
 
 ?>
