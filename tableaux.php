@@ -68,4 +68,4 @@ echo '</pre>';
 $phrase = 'Je m\'appelle ' . $professeur['prenom'] . ' et j\'ai ' . $professeur['age'] . ' ans.';
 
 echo '<p>' . $phrase . '</p>';
-echo '<p>Mes langages préférés sont : ' . $professeur['langages_preferes'] . '</p>';
+// echo '<p>Mes langages préférés sont : ' . $professeur['langages_preferes'] . '</p>';
