@@ -60,6 +60,23 @@ $autrePhrase .= $piece;
 echo $sautDeLigne;
 echo $autrePhrase;
 
+// Cas particulier de l'apostrophe
+$phrase = 'Je suis à l\'école'; // Utilisation d'un backslash \ (sur le 8)
+// "Echappement de caractère"
+
+// Utilisation des doubles quotes
+$phrase = "Je suis à l'école et je dis : \"Bonjour\"";
+
+// Publipostage de variables
+$lieu = 'jardin';
+$phrase = "Je suis dans le $lieu"; // La variable est exécutée
+echo $sautDeLigne;
+echo $phrase;
+
+// Identique à : 
+$phrase = 'Je suis dans le ' . $lieu;
+
+
 
 // -----------------------------------------------
 
