@@ -26,6 +26,13 @@ $piecesDOr = rand(50, 100);
 $NbJourDeLaSemaine = rand(1, 7);
 $joursDeLaSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
+$range = range(1, 7);
+
+echo '<pre>';
+print_r($range);
+print_r($joursDeLaSemaine);
+echo '</pre>';
+
 //
 // Exercices autour du if
 // (Complétez l'histoire à chaque fois qu'il se passe quelque chose)
@@ -107,17 +114,125 @@ if (!$conditionsPourGagnerDesPiecesDOr && !$conditionsPourPerdreDesPiecesDOr) {
 
 // 6.
 // Indiquez dans l'histoire quel jour nous sommes
+$jour = $joursDeLaSemaine[$NbJourDeLaSemaine - 1];
+$histoire .= '<p>Nous sommes un ' . $jour . ', c\'est le jour '. $NbJourDeLaSemaine .'  de la semaine.</p>';
 
+// Variante : 
+// $indexJour = $NbJourDeLaSemaine - 1;
+// $jour = $joursDeLaSemaine[$indexJour];
+// $histoire .= '<p>Nous sommes un ' . $jour . ', c\'est le jour '. ($NbJourDeLaSemaine + 1) .'  de la semaine.</p>';
 
 
 // 7.
 // Si je suis en début de semaine (lundi, mardi, mercredi) je me rends à ma destination par un chemin de 740m, et je gagne 1 point de force
 // Si je suis en fin de semaine (les autres jours), je me rends à ma destination par un chemin de 1345m, et je perds 1 point d'agilité
+// if ($NbJourDeLaSemaine <= 3) {
+//     $distanceParcourue += 740;
+//     $force += 1;
+// } else {
+//     $distanceParcourue += 1345;
+//     $agilite--;
+// }
 
+// switch ($jour) {
 
+//     // Groupe de vérifications
+//     case 'Lundi':
+//     case 'Mardi':
+//     case 'Mercredi':
+//         // Bloc d'instructions
+//         $distanceParcourue += 740;
+//         $force += 1;
+//         // -------------------
+//         break;
+
+//     case 'Jeudi':
+//     case 'Vendredi':
+//     case 'Samedi':
+//     case 'Dimanche':
+//         // Bloc d'instructions
+//         $distanceParcourue += 1345;
+//         $agilite--;
+//         // -------------------
+//         break;
+// }
+
+// Variante
+switch ($jour) {
+
+    // Groupe de vérifications
+    case 'Lundi':
+    case 'Mardi':
+    case 'Mercredi':
+        // Bloc d'instructions
+        $distanceParcourue += 740;
+        $force += 1;
+        $histoire .= '<p>Début de semaine.</p>';
+        // -------------------
+        break;
+
+    default:
+        // Bloc d'instructions
+        $distanceParcourue += 1345;
+        $agilite--;
+        $histoire .= '<p>Fin de semaine.</p>';
+        // -------------------
+        break;
+}
 
 // 8. A l'aide d'un "if elseif elseif..." déterminer la tranche de 20, dans laquelle se trouve le nombre de pièces d'or (0-20; 21-40; 41-60; jusque 100)
 // Gérez le cas où il y aurait plus de 100 pièces également
+if ($piecesDOr <= 20) {
+    $histoire .= '<p>Je suis dans la tranche 0-20</p>';
+} elseif ($piecesDOr <= 40) {
+    $histoire .= '<p>Je suis dans la tranche 21-40</p>';
+} elseif ($piecesDOr <= 60) {
+    $histoire .= '<p>Je suis dans la tranche 41-60</p>';
+} elseif ($piecesDOr <= 80) {
+    $histoire .= '<p>Je suis dans la tranche 61-80</p>';
+}  elseif ($piecesDOr <= 100) {
+    $histoire .= '<p>Je suis dans la tranche 81-100</p>';
+} else {
+    $histoire .= '<p>Je suis dans la tranche 101+</p>';
+}
+
+// Variante avec un "switch true"
+
+switch (true) {
+
+    case $piecesDOr <= 20:
+        $histoire .= '<p>Je suis dans la tranche 0-20</p>';
+        break;
+
+    case $piecesDOr <= 40:
+        $histoire .= '<p>Je suis dans la tranche 21-40</p>';
+        break;
+
+    // ...
+
+    case $piecesDOr <= 100:
+        $histoire .= '<p>Je suis dans la tranche 81-100</p>';
+        break;
+
+    default:
+        $histoire .= '<p>Je suis dans la tranche 101+</p>';
+        break;
+}
+
+// Depuis PHP 8, "match"
+$distanceSelonJour = match($jour) {
+    'Lundi', 'Mardi', 'Mercredi' => 740,
+    default => 1345
+};
+
+$histoire .= '<p>Le ' . $jour . ' je parcours ' . $distanceSelonJour . '</p>';
+
+
+
+
+
+
+
 
 
 $histoire .= '<p>J\'ai parcouru ' . $distanceParcourue . 'm</p>';

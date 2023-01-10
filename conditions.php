@@ -51,3 +51,19 @@ if ($monAge >= AGE_LIMITE_POUR_PASSER_LE_PERMIS) {
 // Un premier bloc d'instructions, délimité par { }
 // Si nécessaire le mot clé "else"
 // Un second bloc d'instructions, délimité par { }
+
+
+
+// Le switch
+// Permet de tester différentes valeurs d'une même variable
+// Peut être + lisible que des if/else/if/else imbriqués
+// Il faut que la variable testée et les valeurs comparées soient du même type
+// On peut regrouper les case entre eux
+// le break peut être utile pour finir un switch quand un cas concordant a été trouvé
+// Dans 99% des switch : case / break
+// Dans 99% des switch, on a un default à la fin pour "tous les autres cas"
+
+
+// Le switch true
+// Permet de tester différentes conditions et groupes de conditions
+// Notion de booléens
