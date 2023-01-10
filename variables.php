@@ -186,3 +186,13 @@ echo $phrase;
 
 // PHP transforme tout seul le nombre entier en chaine de caractères : 34 => '34' pour pouvoir réaliser la concaténation.
 // Point d'attention, car PHP fait souvent des choses tout seul, ce qui peut entrainer des effets de bord, et donc des bugs.
+
+// --------------------------------------------------
+
+// 4ème type de variable : les BOOLEENS
+// 2 valeurs possibles : true/false (Vrai ou Faux)
+
+$vrai = true; // Toujours en minuscule
+$faux = false;
+
+
