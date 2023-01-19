@@ -47,8 +47,12 @@ function creerUnEnnemi(int $niveau): array
     $alphabet = str_shuffle($alphabet);
     $nom = substr($alphabet, 0, 6);
 
-    return [
-        'nom' => 'Ork ' . $nom,
-        'puissance' => $puissance
-    ];
-};
+    $ennemi = ['nom' => 'Ork ' . $nom, 'puissance' => $puissance];
+
+    return $ennemi;
+
+    // return [
+    //     'nom' => 'Ork ' . $nom,
+    //     'puissance' => $puissance
+    // ];
+}
