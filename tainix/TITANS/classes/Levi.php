@@ -2,9 +2,12 @@
 
 class Levi
 {
+    public const POINTS_WHEN_SINGLE_ATTACK = 1;
+    public const POINTS_WHEN_TITAN_IS_KILL = 100;
+
     public int $score = 0;
     public int $altitude = 0;
-    private ?Habitation $habitationWhereIAm = null;
+    private ?Habitation $habitationWhereAmI = null;
 
     public function __construct(
         public int $gaz,
@@ -12,30 +15,40 @@ class Levi
         public Tribe $tribe
     )
     {
-            $habitationWhereIWantToGo = $this->hood->getClosest(
-                $this->tribe->getTallest()
-            );
-
-            $gazIWillConsumed = Calculateur::gazConsumedToMove(
-                start: $this->altitude,
-                destination: $habitationWhereIWantToGo->height
-            );
-            
-            try {
-                $this->decreaseGaz($gazIWillConsumed);
-            } catch (Exception $e) {
-                echo $e->getMessage();
-                return; // Fin de mon constructeur
-            }
-
-            // "Sinon" : 
-            $this->moveToHabitation($habitationWhereIWantToGo);
+        $this->moveToHabitation();
     }
 
-    public function moveToHabitation(Habitation $habitationToGo): void
+    public function moveToHabitation(): void
     {
-        $this->habitationWhereIAm = $habitationToGo;
-        $this->altitude = $this->habitationWhereIAm->height;
+        // Pour bouger, faut que j'ai au moins 1 titan de vivant
+        if (! $this->tribe->hasAtLeastOneAliveTitan()) {
+            return;
+        }
+
+        $habitationWhereIWantToGo = $this->hood->getClosest(
+            $this->tribe->getTallest()
+        );
+
+        // Si je suis déjà à la même altitude
+        if ($this->altitude === $habitationWhereIWantToGo->height) {
+            return;
+        }
+
+        $gazIWillConsumed = Calculateur::gazConsumedToMove(
+            start: $this->altitude,
+            destination: $habitationWhereIWantToGo->height
+        );
+        
+        try {
+            $this->decreaseGaz($gazIWillConsumed);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return; // Fin de mon constructeur
+        }
+
+        // "Sinon" : 
+        $this->habitationWhereAmI = $habitationWhereIWantToGo;
+        $this->altitude = $this->habitationWhereAmI->height;
     }
 
     public function decreaseGaz(int $gazConsumed): void
@@ -52,45 +65,37 @@ class Levi
 
     public function attack(): void
     {
-        $block = 0;
         while (true) {
 
-            // Il n'y a plus de Titan à affronter
             if (! $this->tribe->hasAtLeastOneAliveTitan()) {
                 break; // Fin de mon while
             }
 
-            // Calculer le gaz pour attaquer
+            $titanToAttack = $this->tribe->getTallest();
 
-            // Consommation du gaz
+            $gazIWillConsumed = Calculateur::gazConsumedToAttackTitan(
+                titan: $titanToAttack,
+                habitation: $this->habitationWhereAmI
+            );
+
             try {
                 $this->decreaseGaz($gazIWillConsumed);
             } catch (Exception $e) {
-                echo $e->getMessage();
                 break; // Fin de mon while
             }
 
-            // Calcule la puissance de mon attaque
+            $power = Calculateur::powerOfAttack(
+                titan: $titanToAttack,
+                habitation: $this->habitationWhereAmI
+            );
 
-            // J'enlève des points de vie au titan
+            $titanToAttack->decreaseHP($power);
+            $this->score += self::POINTS_WHEN_SINGLE_ATTACK;
 
-            // Je gagne 1pt
-
-            // Je regarde s'il est mort
-                // S'il est mort ?
-                // Je gagne 100 pts
-                // Je change peut être d'habitation
-            
-
-            // Sécurité
-            $block++;
-            if ($block >= 1000) {
-                break;
+            if (! $titanToAttack->isAlive()) {
+                $this->score += self::POINTS_WHEN_TITAN_IS_KILL;
+                $this->moveToHabitation();
             }
         }
-
-        // ???
-
-        // ???
     }
 }
